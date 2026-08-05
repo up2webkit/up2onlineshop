@@ -1,0 +1,853 @@
+<!doctype html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>UP2 Online Shop - Baju Anak Berkualitas</title>    
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    
+    <!-- Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Nunito', 'sans-serif'],
+                        display: ['"Baloo 2"', 'cursive'], // Added for the hero text
+                    },
+                    colors: {
+                        brand: {
+                            50: '#fef2f2',
+                            100: '#fee2e2',
+                            500: '#e32227', // Warna Merah Bendera Indonesia
+                            600: '#cc1e23',
+                            700: '#b31a1e',
+                        },
+                        accent: {
+                            400: '#ff5252',
+                            500: '#ff1744', // Red for discount badges
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Add Google Font for the Hero text -->
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Nunito', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+        /* Custom scrollbar for a cleaner look */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8; 
+        }
+        .toast-enter {
+            animation: slideInBottom 0.3s ease-out forwards;
+        }
+        @keyframes slideInBottom {
+            from { transform: translateY(100%); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        
+        /* Custom styles for specific elements from the image */
+        .hero-banner-container {
+            background-image: url('https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiZLNQZNjcx6kPZBUFOqu7MVmP9Esg1iMg-lukh1C9WtQGKya5etvLHx9CgIqP5KRuUKgVmvuprs1dFSNgEp_3y-d1qqRXwLEvYdI8PAGIVMEY02TubbIxNNbVSzTqmVn3m9ILU5rn1K2i3yYv7evWIxQnqOM5kLRLPWKSc8orm092ejBoGCcUc9fcrirQ/s1721/Heropage%20Banner_toko%20online_tema%20kemerdekaan.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            width: 100%;
+            /* Set a fluid aspect ratio that matches typical banners (e.g., 16:9 or similar) */
+            /* This ensures the whole image is visible across different screen sizes */
+            aspect-ratio: 16 / 9;
+            max-height: 600px; /* Limit height on very large screens */
+            position: relative;
+        }
+
+        /* Adjust aspect ratio for mobile to ensure the core content is visible */
+        @media (max-width: 768px) {
+            .hero-banner-container {
+                 aspect-ratio: 4 / 3;
+            }
+        }
+        
+        .category-pill.active {
+            background-color: #e32227; /* Merah */
+            color: white;
+            border-color: #e32227;
+        }
+        .category-pill {
+            background-color: white;
+            color: #4b5563;
+            border: 1px solid #e5e7eb;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+    <!-- Navigation Bar (Updated to match image) -->
+    <nav class="sticky top-0 w-full bg-brand-500 shadow-md z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row justify-between items-center py-3 md:h-16 gap-3">
+                
+                <!-- Logo -->
+                <div class="flex-shrink-0 flex items-center gap-3 cursor-pointer w-full md:w-auto justify-between md:justify-start">
+                    <div class="flex items-center gap-3">
+                        <div class="bg-white p-1.5 rounded-lg flex items-center justify-center">
+                             <i class="ph ph-tote text-2xl text-brand-500 font-bold"></i>
+                        </div>
+                        <div class="flex flex-col text-white">
+                            <div class="flex items-center gap-2">
+                                <span class="font-bold text-xl leading-tight">UP2 Online Shop 🇮🇩</span>
+                                <span class="bg-yellow-400 text-yellow-900 text-[10px] font-bold px-1.5 py-0.5 rounded tracking-wide">DEMO</span>
+                            </div>
+                            <span class="text-[10px] opacity-90 leading-tight">Spesial Kemerdekaan</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Mobile menu button -->
+                    <button class="md:hidden text-white focus:outline-none" id="mobileMenuBtn">
+                        <i class="ph ph-list text-2xl"></i>
+                    </button>
+                </div>
+                
+                <!-- Search Bar -->
+                <div class="flex-1 w-full md:max-w-2xl px-0 md:px-4 hidden md:block" id="searchContainer">
+                    <div class="relative w-full">
+                        <input type="text" id="searchInputDesktop" class="w-full bg-white rounded-full py-2 px-4 pr-10 focus:outline-none focus:ring-2 focus:ring-brand-100 text-sm" placeholder="Cari baju anak...">
+                        <button class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-brand-500">
+                            <i class="ph ph-magnifying-glass text-lg"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Chat WA Button -->
+                <div class="hidden md:flex items-center">
+                    <a href="https://wa.me/6281234567890?text=Halo%20UP2%20Online%20Shop%2C%20saya%20ingin%20bertanya%20seputar%20produk%20baju%20anak%20yang%20dijual." target="_blank" rel="noopener noreferrer" class="bg-white text-brand-500 hover:bg-gray-50 font-semibold py-1.5 px-4 rounded-full flex items-center gap-2 text-sm transition-colors shadow-sm">
+                        <i class="ph ph-whatsapp-logo text-lg"></i> Chat WA
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Mobile Search (Visible only on small screens when menu might be open or just always below header) -->
+            <div class="w-full pb-3 md:hidden">
+                 <div class="relative w-full">
+                    <input type="text" id="searchInputMobile" class="w-full bg-white rounded-full py-2 px-4 pr-10 focus:outline-none focus:ring-2 focus:ring-brand-100 text-sm" placeholder="Cari baju anak...">
+                    <button class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-brand-500">
+                        <i class="ph ph-magnifying-glass text-lg"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section (Updated to use the provided image banner) -->
+    <div class="w-full relative border-b-4 border-brand-500 bg-gray-50">
+        <!-- Container for the background image -->
+        <div class="hero-banner-container mx-auto max-w-[1920px] relative">
+            
+            <!-- Positioning the CTA Button at the bottom center of the banner area -->
+            <div class="absolute bottom-6 left-0 right-0 flex justify-center w-full z-20">
+                <a href="#koleksi" class="bg-brand-500 hover:bg-brand-600 text-white font-bold py-3 px-8 rounded-full shadow-lg transform transition hover:scale-105 flex items-center gap-2 border-2 border-white/20 hidden md:flex">
+                    <i class="ph ph-shopping-cart text-xl"></i> Promo Kemerdekaan
+                </a>
+            </div>
+            
+            <!-- Absolute floating button (Pesan Sekarang) - Mobile Only -->
+            <button onclick="document.getElementById('koleksi').scrollIntoView({behavior: 'smooth'})" class="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-brand-500 text-white px-6 py-2.5 rounded-full font-bold shadow-md flex items-center justify-center gap-2 text-sm md:hidden w-11/12 border border-white/20 z-20">
+                <i class="ph ph-shopping-cart text-lg"></i> Promo Kemerdekaan
+            </button>
+        </div>
+    </div>
+
+    <!-- Main Content Area -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        
+        <!-- Filter/Category Pills -->
+        <div class="flex overflow-x-auto pb-4 gap-2 scrollbar-hide -mx-4 px-4 sm:mx-0 sm:px-0" id="kategori">
+            <button class="category-pill active whitespace-nowrap px-4 py-1.5 rounded-full text-sm font-semibold flex items-center gap-2">
+                <i class="ph ph-star"></i> Semua
+            </button>
+            <button class="category-pill whitespace-nowrap px-4 py-1.5 rounded-full text-sm font-semibold flex items-center gap-2">
+                <i class="ph ph-t-shirt"></i> Kaos
+            </button>
+            <button class="category-pill whitespace-nowrap px-4 py-1.5 rounded-full text-sm font-semibold flex items-center gap-2">
+                <i class="ph ph-dress"></i> Dress
+            </button>
+            <button class="category-pill whitespace-nowrap px-4 py-1.5 rounded-full text-sm font-semibold flex items-center gap-2">
+                <i class="ph ph-baby"></i> Setelan <!-- Placeholder icon -->
+            </button>
+             <button class="category-pill whitespace-nowrap px-4 py-1.5 rounded-full text-sm font-semibold flex items-center gap-2">
+                <i class="ph ph-coat-hanger"></i> Jaket
+            </button>
+             <button class="category-pill whitespace-nowrap px-4 py-1.5 rounded-full text-sm font-semibold flex items-center gap-2">
+                <i class="ph ph-pants"></i> Celana
+            </button>
+            <button class="category-pill whitespace-nowrap px-4 py-1.5 rounded-full text-sm font-semibold flex items-center gap-2">
+                <i class="ph ph-moon-stars"></i> Piyama
+            </button>
+            <button class="category-pill whitespace-nowrap px-4 py-1.5 rounded-full text-sm font-semibold flex items-center gap-2">
+                <i class="ph ph-user"></i> Jumpsuit
+            </button>
+        </div>
+
+        <!-- Secondary Value Props Bar -->
+        <div class="flex flex-wrap items-center gap-4 py-4 border-b border-gray-200 mb-8 text-xs font-semibold text-gray-600">
+            <div class="flex items-center gap-1">
+                <i class="ph-fill ph-truck text-brand-500 text-lg"></i>
+                Gratis Ongkir min. Rp100rb
+            </div>
+            <div class="flex items-center gap-1">
+                <i class="ph-fill ph-check-circle text-brand-500 text-lg"></i>
+                Bahan Premium
+            </div>
+            <div class="flex items-center gap-1">
+                <i class="ph-fill ph-arrow-counter-clockwise text-brand-500 text-lg"></i>
+                Garansi Kepuasan
+            </div>
+            <div class="flex items-center gap-1">
+                <i class="ph-fill ph-lightning text-brand-500 text-lg"></i>
+                Respon Cepat
+            </div>
+        </div>
+
+        <!-- Section Header -->
+        <div class="mb-6" id="koleksi">
+            <h2 class="text-2xl font-bold text-gray-900" id="categoryTitle">Kaos</h2>
+            <p class="text-sm text-gray-500 mt-1" id="categoryCount">Memuat produk...</p>
+        </div>
+
+        <!-- Product Grid -->
+        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4" id="productGrid">
+            <!-- Product Card (Matching the image) -->
+            <div class="bg-white rounded-2xl p-3 shadow-sm border border-gray-100 hover:shadow-md transition-shadow relative flex flex-col group cursor-pointer">
+                <!-- Badges -->
+                <div class="absolute top-4 left-4 z-10">
+                    <span class="bg-orange-500 text-white text-[10px] font-bold px-2 py-1 rounded-full">Terlaris</span>
+                </div>
+                <div class="absolute top-4 right-4 z-10">
+                    <span class="bg-red-500 text-white text-[10px] font-bold px-2 py-1 rounded-full">-24%</span>
+                </div>
+                
+                <!-- Image container with fixed aspect ratio -->
+                <div class="w-full aspect-square rounded-xl bg-gray-50 mb-3 overflow-hidden flex items-center justify-center">
+                    <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjglPn7K9NWIsolFNO7PzhuwC7UJ8Zt-oXYebP2VaGyuM0gT6aGQXH1EFy0_r6jgi1_DXNX8POSSUr3wtO97_XVpxs6TRfCPEZ8LY9kR-pIgnF_t2eTcFqur7QX8r1-b02wyc7-_SpJocMf8Eenw_mmhvLQmTmI8DUViUs-DUTjqXKm5cfeyv6hQaszQCY/s590/Kaos%20Anak%20Dinosaurus.jpeg" alt="Kaos Anak Dinosaurus" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                </div>
+                
+                <!-- Product Info -->
+                <div class="flex flex-col flex-1">
+                    <h3 class="text-sm text-gray-800 font-medium mb-1 line-clamp-2">Kaos Anak Dinosaurus</h3>
+                    
+                    <div class="mt-auto">
+                        <div class="flex items-center gap-2 mb-1">
+                            <span class="text-brand-500 font-bold text-base">Rp 65.000</span>
+                        </div>
+                        <div class="text-xs text-gray-400 line-through mb-2">Rp 85.000</div>
+                        
+                        <div class="flex items-center gap-1 text-[10px] text-gray-500">
+                            <i class="ph-fill ph-star text-yellow-400"></i>
+                            <span class="font-medium text-gray-700">4.9</span>
+                            <span class="mx-0.5">|</span>
+                            <span>234 terjual</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- More products can be added here dynamically -->
+        </div>
+
+    </div>
+
+    <!-- Footer (Updated to match image) -->
+    <footer class="bg-gray-50 mt-12 pt-12 pb-6 border-t border-gray-200">
+        <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <!-- Footer Logo & Info -->
+            <div class="flex flex-col gap-6 mb-8">
+                <!-- Logo -->
+                <div class="flex items-center gap-3">
+                    <div class="bg-brand-500 p-2 rounded-xl flex items-center justify-center">
+                         <i class="ph ph-tote text-2xl text-white font-bold"></i>
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="font-bold text-xl text-gray-900 leading-tight">UP2 Online Shop</span>
+                        <span class="text-xs text-gray-500 leading-tight">Toko Baju Anak Berkualitas</span>
+                    </div>
+                </div>
+
+                <!-- Contact List -->
+                <div class="space-y-4 ml-1">
+                    <div class="flex items-start gap-3">
+                        <i class="ph ph-whatsapp-logo text-green-500 text-xl mt-0.5"></i>
+                        <div>
+                            <p class="text-sm font-bold text-gray-800">WhatsApp</p>
+                            <a href="https://wa.me/6281234567890" target="_blank" rel="noopener noreferrer" class="text-sm text-green-600 hover:underline">0812-3456-7890</a>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-start gap-3">
+                        <i class="ph ph-clock text-green-500 text-xl mt-0.5"></i>
+                        <div>
+                            <p class="text-sm font-bold text-gray-800">Jam Operasional</p>
+                            <p class="text-sm text-gray-600">Senin - Sabtu: 08.00 - 20.00 WIB</p>
+                            <p class="text-sm text-gray-600">Minggu: 09.00 - 16.00 WIB</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start gap-3">
+                        <i class="ph ph-map-pin text-green-500 text-xl mt-0.5"></i>
+                        <div>
+                            <p class="text-sm font-bold text-gray-800">Pengiriman</p>
+                            <p class="text-sm text-gray-600">Seluruh Indonesia via Tiki, JNE, J&T, SiCepat</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Big CTA Button -->
+            <a href="https://wa.me/6281234567890?text=Halo%20UP2%20Online%20Shop%2C%20saya%20ingin%20bertanya%20seputar%20produk%20baju%20anak%20yang%20dijual." target="_blank" rel="noopener noreferrer" class="block w-full bg-brand-500 hover:bg-brand-600 text-white text-center font-bold py-3 rounded-xl transition-colors mb-8 flex items-center justify-center gap-2">
+                <i class="ph ph-whatsapp-logo text-xl"></i> Hubungi Kami via WhatsApp
+            </a>
+
+            <!-- Footer Features -->
+            <div class="flex flex-wrap justify-center gap-x-6 gap-y-2 mb-6">
+                <span class="flex items-center gap-1 text-xs text-green-600 font-semibold bg-green-50 px-2 py-1 rounded-full">
+                    <i class="ph-bold ph-check"></i> Bahan Berkualitas
+                </span>
+                <span class="flex items-center gap-1 text-xs text-green-600 font-semibold bg-green-50 px-2 py-1 rounded-full">
+                    <i class="ph-bold ph-check"></i> Harga Terjangkau
+                </span>
+                <span class="flex items-center gap-1 text-xs text-green-600 font-semibold bg-green-50 px-2 py-1 rounded-full">
+                    <i class="ph-bold ph-check"></i> Pengiriman Cepat
+                </span>
+                <span class="flex items-center gap-1 text-xs text-green-600 font-semibold bg-green-50 px-2 py-1 rounded-full">
+                    <i class="ph-bold ph-check"></i> Garansi Kepuasan
+                </span>
+            </div>
+
+            <!-- Copyright -->
+            <div class="text-center text-xs text-gray-400 space-y-1.5">
+                <p>&copy; 2026 UP2 Online Shop. Semua hak dilindungi.</p>
+                <p>Powered by <a href="https://wa.link/i8w855" target="_blank" rel="noopener noreferrer" class="text-brand-500 font-semibold hover:underline">UP2WebKit</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Toast Notification Container -->
+    <div id="toastContainer" class="fixed bottom-4 left-1/2 transform -translate-x-1/2 z-[100] flex flex-col items-center gap-2 w-full max-w-sm px-4 pointer-events-none"></div>
+
+    <!-- Product Detail Modal -->
+    <div id="productModal" class="fixed inset-0 z-[110] hidden flex items-end md:items-center justify-center pt-10 md:py-10">
+        <!-- Backdrop -->
+        <div class="absolute inset-0 bg-black/60 transition-opacity" onclick="closeModal()"></div>
+        
+        <!-- Modal Content -->
+        <div class="relative w-full md:max-w-xl bg-white md:rounded-3xl rounded-t-3xl shadow-2xl flex flex-col max-h-full transition-transform transform translate-y-full md:translate-y-0" id="modalContent">
+            
+            <!-- Close button (Mobile draggable handle style & Desktop standard style) -->
+            <div class="relative w-full pt-4 pb-2 flex justify-center md:hidden flex-shrink-0" onclick="closeModal()">
+                <div class="w-12 h-1.5 bg-gray-300 rounded-full"></div>
+            </div>
+            <button onclick="closeModal()" class="hidden md:flex absolute top-4 right-4 bg-white border border-gray-100 hover:bg-gray-50 text-gray-500 w-8 h-8 rounded-full items-center justify-center z-10 transition-colors shadow-md">
+                <i class="ph-bold ph-caret-down text-lg"></i>
+            </button>
+
+            <!-- Scrollable Area -->
+            <div class="overflow-y-auto flex-1 w-full" id="modalScrollArea">
+                <div id="modalBody" class="pb-6">
+                    <!-- Dynamic Content Will Go Here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Mock Product Data
+        const products = [
+            {
+                id: 1,
+                name: "Kaos Anak Dinosaurus",
+                category: "Kaos",
+                price: 65000,
+                originalPrice: 85000,
+                rating: 4.9,
+                sold: 234,
+                views: 1250,
+                stock: 50,
+                image: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjglPn7K9NWIsolFNO7PzhuwC7UJ8Zt-oXYebP2VaGyuM0gT6aGQXH1EFy0_r6jgi1_DXNX8POSSUr3wtO97_XVpxs6TRfCPEZ8LY9kR-pIgnF_t2eTcFqur7QX8r1-b02wyc7-_SpJocMf8Eenw_mmhvLQmTmI8DUViUs-DUTjqXKm5cfeyv6hQaszQCY/s590/Kaos%20Anak%20Dinosaurus.jpeg",
+                description: "Kaos anak laki-laki dengan sablon dinosaurus lucu. Nyaman dipakai seharian.",
+                material: "Cotton Combed 30s",
+                weight: "150 gram",
+                sizes: ["S (1-2 th)", "M (3-4 th)", "L (5-6 th)"],
+                colors: ["Hijau Muda", "Kuning", "Putih"]
+            },
+            {
+                id: 2,
+                name: "Jumpsuit Polkadot",
+                category: "Jumpsuit",
+                price: 105000,
+                originalPrice: 135000,
+                rating: 4.7,
+                sold: 143,
+                views: 3420,
+                stock: 30,
+                image: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgu-uW1xxgk0grU7LHcx-pyp4U6dr62y4NWsk-dkNCJGq7hyphenhyphenl3mlU7e48zRJuojlWXXKydbBP7nC_dKX2AX_JCO_22mzAO6BPuZctfkBBEqjbjWzYLwmcf1GBTwDlZlOcUis06Q1J7zjwp5xyX0ZaikqO0eJfgxv5kC9d3FrKKZzlTn1oaKdcsf-stG9qQ/s664/Jumpsuit%20Polkadot.jpeg",
+                description: "Jumpsuit anak perempuan dengan motif polkadot yang ceria. Kerah Peter Pan yang menggemaskan dengan detail renda putih. Kancing depan yang mudah dibuka. Bahan cotton yang adem dan nyaman untuk cuaca panas.",
+                material: "Cotton Voile",
+                weight: "220 gram",
+                sizes: ["S (1-2 th)", "M (2-3 th)", "L (3-4 th)"],
+                colors: ["Orange", "Merah Muda", "Biru Muda"]
+            },
+            {
+                id: 3,
+                name: "Setelan Piyama Motif Bintang",
+                category: "Piyama",
+                price: 75000,
+                originalPrice: 100000,
+                rating: 4.8,
+                sold: 450,
+                views: 890,
+                stock: 120,
+                image: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEi5PgsfOC3dQveIq7rDjwJcnzS5O-6LDkSZ1eWfR2qyfAH84k4KWvYAB9b7W8c4Uox36w3lLq1v5esLm4ABJeiGaZ3uqfw5VZCpXQRnN435i6gmYbLePRWuvpn47H_Oaz6-P_cFLbs1WetDs58gaOncMNLX-jvoXbLoIqYwb2_UJ2Ef5slX8nXjBWs50uQ/s689/Setelan%20Piyama%20Motif%20Bintang.jpeg",
+                description: "Setelan piyama tidur anak yang lembut dan menghangatkan.",
+                material: "Katun Catra",
+                weight: "200 gram",
+                sizes: ["S", "M", "L", "XL"],
+                colors: ["Biru", "Kuning"]
+            },
+            {
+                id: 4,
+                name: "Dress Bunga Anak Perempuan",
+                category: "Dress",
+                price: 120000,
+                originalPrice: 150000,
+                rating: 4.9,
+                sold: 89,
+                views: 560,
+                stock: 15,
+                image: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh2nxMdrhJwzgRTa3GxXoO68euoDGzUyvyveliMlsITj05TE06TfdvXScJpDcjLphfb35GKLTbdYaCtZvp9RGkUbjRGy5wJnZJb4KjJHrNu5sPcQXfjCNuvNDdGgcbxSFS0kxg5UszbIKAPMAXM2hF2nR-3uP1xImeFfO8_JflGKLFbgw9aADGLzk-q4F8/s664/Dress%20Bunga%20Anak%20Perempuan.jpeg",
+                description: "Dress cantik motif bunga untuk acara spesial atau jalan-jalan.",
+                material: "Katun Rayon",
+                weight: "180 gram",
+                sizes: ["2T", "3T", "4T", "5T"],
+                colors: ["Pink", "Putih"]
+            },
+            {
+                id: 5,
+                name: "Jaket Denim Hoodie Hangat",
+                category: "Jaket",
+                price: 185000,
+                originalPrice: 220000,
+                rating: 5.0,
+                sold: 56,
+                views: 210,
+                stock: 10,
+                image: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEicUNKeO3Oo1Pt22FwuHIWLQjd3SzCJGroPHiWbXOy6wo89Ql8sMOsObDOP49yr8LvBp75YacgNgyR8d_bwzliuc3t22rW_izhPk2CnwdA-DZP4ns8pO57v3nM228pN5ottXegXCyVtkk8WyTAjI0c9C4qyUDiGHb-jgUvV0WIkkqahJHuuVrzNaNehVBE/s662/Jaket%20Denim%20Hoodie%20Hangat.jpeg",
+                description: "Jaket denim keren dengan penutup kepala (hoodie). Cocok untuk gaya kasual.",
+                material: "Denim & Fleece",
+                weight: "350 gram",
+                sizes: ["4 th", "6 th", "8 th", "10 th"],
+                colors: ["Biru Denim"]
+            }
+        ];
+
+        // Format Currency
+        // Format Currency
+        const formatRupiah = (number) => {
+            return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(number);
+        };
+
+        // Render Products
+        const renderProducts = (filterCategory = 'Semua', searchQuery = '') => {
+            const grid = document.getElementById('productGrid');
+            
+            // Filter logic
+            let filteredProducts = products;
+            
+            if (filterCategory !== 'Semua') {
+                filteredProducts = filteredProducts.filter(p => p.category.toLowerCase() === filterCategory.toLowerCase());
+            }
+
+            if (searchQuery.trim() !== '') {
+                const query = searchQuery.toLowerCase().trim();
+                filteredProducts = filteredProducts.filter(p => 
+                    p.name.toLowerCase().includes(query) || 
+                    p.description.toLowerCase().includes(query) ||
+                    p.category.toLowerCase().includes(query)
+                );
+            }
+            
+            // Update section header
+            const categoryTitleEl = document.getElementById('categoryTitle');
+            const categoryCountEl = document.getElementById('categoryCount');
+            
+            if (categoryTitleEl) {
+                if (searchQuery.trim() !== '') {
+                    categoryTitleEl.textContent = `Hasil Pencarian: "${searchQuery}"`;
+                } else {
+                    categoryTitleEl.textContent = filterCategory;
+                }
+            }
+            if (categoryCountEl) categoryCountEl.textContent = `${filteredProducts.length} produk ditemukan`;
+
+            let html = '';
+
+            if (filteredProducts.length === 0) {
+                html = `<div class="col-span-full text-center py-10 text-gray-500">Tidak ada produk di kategori ini.</div>`;
+            } else {
+                filteredProducts.forEach(product => {
+                    const discountBadge = product.originalPrice 
+                        ? `<div class="absolute top-4 right-4 z-10"><span class="bg-red-500 text-white text-[10px] font-bold px-2 py-1 rounded-full">-${Math.round((1 - product.price/product.originalPrice)*100)}%</span></div>` 
+                        : '';
+
+                    // Just hardcoding "Terlaris" for the first two for visual similarity
+                    const terlarisBadge = (product.id === 1 || product.id === 2) 
+                        ? `<div class="absolute top-4 left-4 z-10"><span class="bg-orange-500 text-white text-[10px] font-bold px-2 py-1 rounded-full">Terlaris</span></div>` 
+                        : '';
+
+                    const originalPriceHtml = product.originalPrice 
+                        ? `<div class="text-xs text-gray-400 line-through mb-2">${formatRupiah(product.originalPrice)}</div>` 
+                        : '<div class="h-4 mb-2"></div>';
+
+                    html += `
+                        <div class="bg-white rounded-2xl p-3 shadow-sm border border-gray-100 hover:shadow-md transition-shadow relative flex flex-col group cursor-pointer" onclick="openModal(${product.id})">
+                            <!-- Badges -->
+                            ${terlarisBadge}
+                            ${discountBadge}
+                            
+                            <!-- Image container -->
+                            <div class="w-full aspect-square rounded-xl bg-gray-50 mb-3 overflow-hidden flex items-center justify-center">
+                                <img src="${product.image}" alt="${product.name}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                            </div>
+                            
+                            <!-- Product Info -->
+                            <div class="flex flex-col flex-1">
+                                <h3 class="text-sm text-gray-800 font-medium mb-1 line-clamp-2">${product.name}</h3>
+                                
+                                <div class="mt-auto">
+                                    <div class="flex items-center gap-2 mb-1">
+                                        <span class="text-brand-500 font-bold text-base">${formatRupiah(product.price)}</span>
+                                    </div>
+                                    ${originalPriceHtml}
+                                    
+                                    <div class="flex flex-wrap items-center gap-1 text-[10px] text-gray-500">
+                                        <span class="font-medium text-brand-600 bg-brand-50 px-1.5 py-0.5 rounded">Sisa Stok: ${product.stock}</span>
+                                        <span class="mx-0.5">|</span>
+                                        <i class="ph-fill ph-eye text-blue-400"></i>
+                                        <span>${product.views}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+            }
+
+            grid.innerHTML = html;
+        };
+
+        // Modal Logic
+        let selectedSize = '';
+        let selectedColor = '';
+        let currentProduct = null;
+
+        const openModal = (productId) => {
+            currentProduct = products.find(p => p.id === productId);
+            if (!currentProduct) return;
+
+            // Reset selections
+            selectedSize = currentProduct.sizes[0] || '';
+            selectedColor = currentProduct.colors[1] || currentProduct.colors[0] || ''; // Default to second color if available to match screenshot
+
+            renderModalContent();
+            
+            const modal = document.getElementById('productModal');
+            const modalContent = document.getElementById('modalContent');
+            
+            modal.classList.remove('hidden');
+            // Small delay to allow display:block to apply before animating transform
+            setTimeout(() => {
+                modalContent.classList.remove('translate-y-full');
+            }, 10);
+            
+            // Prevent body scroll
+            document.body.style.overflow = 'hidden';
+        };
+
+        const closeModal = () => {
+            const modal = document.getElementById('productModal');
+            const modalContent = document.getElementById('modalContent');
+            
+            modalContent.classList.add('translate-y-full');
+            
+            // Wait for animation to finish before hiding
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                document.body.style.overflow = '';
+            }, 300);
+        };
+
+        const selectSize = (size) => {
+            selectedSize = size;
+            renderModalContent();
+        };
+
+        const selectColor = (color) => {
+            selectedColor = color;
+            renderModalContent();
+        };
+
+        const buildWhatsAppMessage = () => {
+            if (!currentProduct) return '';
+            
+            // Format pesan disesuaikan persis dengan request UAT
+            const text = `Halo UP2 Online Shop! 🇮🇩 Merdeka! Saya tertarik dengan produk: *${currentProduct.name}* Harga: ${formatRupiah(currentProduct.price)} Ukuran: ${selectedSize} Warna: ${selectedColor} Apakah masih tersedia?`;
+            return encodeURIComponent(text);
+        };
+
+        const renderModalContent = () => {
+            if (!currentProduct) return;
+
+            const modalBody = document.getElementById('modalBody');
+            
+            const discountBadge = currentProduct.originalPrice 
+                ? `<span class="bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">-${Math.round((1 - currentProduct.price/currentProduct.originalPrice)*100)}%</span>` 
+                : '';
+                
+            const terlarisBadge = (currentProduct.id === 1 || currentProduct.id === 2) 
+                ? `<span class="bg-orange-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">Terlaris</span>` 
+                : '';
+
+            const originalPriceHtml = currentProduct.originalPrice 
+                ? `<span class="text-sm text-gray-400 line-through">${formatRupiah(currentProduct.originalPrice)}</span>` 
+                : '';
+
+            // Generate Size Buttons
+            const sizeButtonsHtml = currentProduct.sizes.map(size => {
+                const isActive = size === selectedSize;
+                const activeClasses = isActive ? 'bg-brand-500 text-white border-brand-500' : 'bg-white text-gray-700 border-gray-200 hover:border-brand-500';
+                return `<button onclick="selectSize('${size}')" class="px-4 py-1.5 rounded-lg border text-sm font-medium transition-colors ${activeClasses}">${size}</button>`;
+            }).join('');
+
+            // Generate Color Buttons
+            const colorButtonsHtml = currentProduct.colors.map(color => {
+                const isActive = color === selectedColor;
+                const activeClasses = isActive ? 'bg-brand-500 text-white border-brand-500' : 'bg-white text-gray-700 border-gray-200 hover:border-brand-500';
+                return `<button onclick="selectColor('${color}')" class="px-4 py-1.5 rounded-lg border text-sm font-medium transition-colors ${activeClasses}">${color}</button>`;
+            }).join('');
+
+            // Determine specific color for scrollbar based on image reference
+            const scrollbarColor = "border-r-4 border-brand-500";
+
+            modalBody.innerHTML = `
+                <!-- Main Image Area -->
+                <div class="relative w-full bg-white md:rounded-t-3xl ${scrollbarColor} pr-1">
+                    
+                    <!-- Image -->
+                    <div class="w-full aspect-square bg-gray-50 flex items-center justify-center p-4">
+                        <img src="${currentProduct.image}" alt="${currentProduct.name}" class="w-full h-full object-contain mix-blend-multiply">
+                    </div>
+                    
+                    <!-- Badges overlaid on image -->
+                    <div class="absolute top-4 left-4 flex gap-2">
+                        ${terlarisBadge}
+                        ${discountBadge}
+                    </div>
+
+                    <!-- Content Padding Container -->
+                    <div class="px-6 pt-6">
+                        <!-- Category Tag -->
+                        <span class="text-[10px] font-bold text-brand-500 bg-brand-50 px-2 py-1 rounded-md mb-2 inline-block">${currentProduct.category}</span>
+                        
+                        <!-- Title & Meta Info -->
+                        <h2 class="text-xl md:text-2xl font-bold text-gray-900 leading-tight mb-2">${currentProduct.name}</h2>
+                        
+                        <div class="flex flex-wrap items-center gap-3 text-xs text-gray-500 mb-4">
+                            <span class="font-bold text-brand-600 bg-brand-50 px-2 py-1 rounded">Sisa Stok: ${currentProduct.stock}</span>
+                            <span class="flex items-center gap-1"><i class="ph-fill ph-eye text-blue-400"></i> ${currentProduct.views} dilihat</span>
+                        </div>
+
+                        <!-- Price -->
+                        <div class="flex items-end gap-2 mb-6">
+                            <span class="text-2xl md:text-3xl font-bold text-brand-500 leading-none">${formatRupiah(currentProduct.price)}</span>
+                            ${originalPriceHtml}
+                        </div>
+
+                        <!-- Variants: Size -->
+                        <div class="mb-5">
+                            <h4 class="text-sm font-bold text-gray-800 mb-2">Pilih Ukuran</h4>
+                            <div class="flex flex-wrap gap-2">
+                                ${sizeButtonsHtml}
+                            </div>
+                        </div>
+
+                        <!-- Variants: Color -->
+                        <div class="mb-6">
+                            <h4 class="text-sm font-bold text-gray-800 mb-2">Pilih Warna</h4>
+                            <div class="flex flex-wrap gap-2">
+                                ${colorButtonsHtml}
+                            </div>
+                        </div>
+
+                        <!-- Description -->
+                        <div class="mb-6">
+                            <h4 class="text-sm font-bold text-gray-800 mb-2">Deskripsi Produk</h4>
+                            <p class="text-sm text-gray-600 leading-relaxed">
+                                ${currentProduct.description}
+                            </p>
+                        </div>
+
+                        <!-- Specifications Box -->
+                        <div class="bg-gray-50 rounded-xl p-4 mb-6 border border-gray-100">
+                            <h4 class="text-sm font-bold text-gray-800 mb-3">Spesifikasi</h4>
+                            <div class="space-y-2">
+                                <div class="flex items-center gap-2 text-sm text-gray-600">
+                                    <i class="ph ph-cube text-brand-500 text-lg"></i>
+                                    <span class="w-16">Material:</span>
+                                    <span class="font-medium text-gray-800">${currentProduct.material}</span>
+                                </div>
+                                <div class="flex items-center gap-2 text-sm text-gray-600">
+                                    <i class="ph ph-tag text-brand-500 text-lg"></i>
+                                    <span class="w-16">Berat:</span>
+                                    <span class="font-medium text-gray-800">${currentProduct.weight}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- CTA Button -->
+                        <a href="https://wa.me/6281234567890?text=${buildWhatsAppMessage()}" target="_blank" rel="noopener noreferrer" class="block w-full bg-brand-500 hover:bg-brand-600 text-white text-center font-bold py-3.5 px-4 rounded-xl transition-colors shadow-md shadow-brand-500/20 mb-3 flex items-center justify-center gap-2">
+                            <i class="ph ph-whatsapp-logo text-xl"></i> Pesan via WhatsApp <i class="ph-bold ph-caret-right ml-1"></i>
+                        </a>
+                        <p class="text-[10px] text-center text-gray-400">Chat langsung dengan penjual untuk konfirmasi ketersediaan</p>
+                    </div>
+                </div>
+            `;
+        };
+
+        // Toast Notification System (replaces alert)
+        const showToast = (message) => {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            
+            toast.className = 'bg-gray-900 text-white px-4 py-3 rounded-lg shadow-lg flex items-center gap-3 toast-enter pointer-events-auto w-full max-w-sm';
+            toast.innerHTML = `
+                <div class="bg-green-500 rounded-full p-1 flex-shrink-0">
+                    <i class="ph-bold ph-check text-white text-sm"></i>
+                </div>
+                <p class="text-sm font-medium flex-1">${message}</p>
+                <button onclick="this.parentElement.remove()" class="text-gray-400 hover:text-white transition-colors focus:outline-none">
+                    <i class="ph-bold ph-x"></i>
+                </button>
+            `;
+            
+            container.appendChild(toast);
+            
+            // Auto remove after 3 seconds
+            setTimeout(() => {
+                if (document.body.contains(toast)) {
+                    toast.style.opacity = '0';
+                    toast.style.transform = 'translateY(10px)';
+                    toast.style.transition = 'all 0.3s ease-out';
+                    setTimeout(() => toast.remove(), 300);
+                }
+            }, 3000);
+        };
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            // Mobile Menu Toggle (Simplified for this layout)
+            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+            const searchContainer = document.getElementById('searchContainer');
+            
+            if(mobileMenuBtn && searchContainer) {
+                mobileMenuBtn.addEventListener('click', () => {
+                    showToast('Silakan gunakan menu geser kategori di bawah banner.');
+                });
+            }
+            
+            // Category click handling
+            const pills = document.querySelectorAll('.category-pill');
+            pills.forEach(pill => {
+                pill.addEventListener('click', (e) => {
+                    // Remove active from all
+                    pills.forEach(p => p.classList.remove('active'));
+                    // Add active to clicked
+                    const clickedPill = e.currentTarget;
+                    clickedPill.classList.add('active');
+                    
+                    // Kosongkan kolom pencarian saat kategori di-klik
+                    const dSearch = document.getElementById('searchInputDesktop');
+                    const mSearch = document.getElementById('searchInputMobile');
+                    if (dSearch) dSearch.value = '';
+                    if (mSearch) mSearch.value = '';
+                    
+                    // Extract text (remove the icon text content)
+                    const categoryName = clickedPill.textContent.trim();
+                    renderProducts(categoryName);
+                });
+            });
+
+            // Eksekusi render produk agar list interaktif & modal bisa berfungsi
+            // Default select active pill text
+            const activePill = document.querySelector('.category-pill.active');
+            const defaultCategory = activePill ? activePill.textContent.trim() : 'Semua';
+            renderProducts(defaultCategory);
+
+            // Setup Fitur Pencarian Real-time
+            const searchInputDesktop = document.getElementById('searchInputDesktop');
+            const searchInputMobile = document.getElementById('searchInputMobile');
+
+            const handleSearch = (e) => {
+                const query = e.target.value;
+                
+                // Sinkronkan input di versi Desktop dan Seluler (mobile)
+                if (e.target === searchInputDesktop && searchInputMobile) {
+                    searchInputMobile.value = query;
+                } else if (e.target === searchInputMobile && searchInputDesktop) {
+                    searchInputDesktop.value = query;
+                }
+
+                if (query.trim() !== '') {
+                    // Jika sedang mencari, hapus status aktif di semua tombol kategori
+                    pills.forEach(p => p.classList.remove('active'));
+                    renderProducts('Semua', query);
+                } else {
+                    // Kembalikan ke kategori "Semua" jika kolom pencarian dikosongkan lagi
+                    const defaultPill = Array.from(pills).find(p => p.textContent.trim() === 'Semua');
+                    if (defaultPill) {
+                        pills.forEach(p => p.classList.remove('active'));
+                        defaultPill.classList.add('active');
+                    }
+                    renderProducts('Semua');
+                }
+            };
+
+            if (searchInputDesktop) {
+                searchInputDesktop.addEventListener('input', handleSearch);
+            }
+            if (searchInputMobile) {
+                searchInputMobile.addEventListener('input', handleSearch);
+            }
+        });
+    </script>
+</body>
+</html>
